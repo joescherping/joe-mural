@@ -27,6 +27,37 @@ async function getTransaction(transactionId) {
   return response.data;
 }
 
+/**
+ * POST /api/payouts/payout (base URL already includes /api/)
+ * @param {object} payload - e.g. { sourceAccountId, payouts: [...] }
+ */
+async function createPayout(payload) {
+  const response = await muralApi.post("payouts/payout", payload, {
+    headers: getAuthHeaders(),
+  });
+
+  return response.data;
+}
+
+/**
+ * POST /api/payouts/payout/{payout-request-id}/execute
+ * @param {string} payoutRequestId
+ * @param {object} [body] - defaults to {} if the API accepts an empty JSON body
+ */
+async function executePayout(payoutRequestId, body = {}) {
+  const response = await muralApi.post(
+    `payouts/payout/${encodeURIComponent(payoutRequestId)}/execute`,
+    null,
+    {
+      headers: getAuthHeaders(),
+    },
+  );
+
+  return response.data;
+}
+
 module.exports = {
   getTransaction,
+  createPayout,
+  executePayout,
 };
