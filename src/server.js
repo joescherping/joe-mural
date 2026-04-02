@@ -12,7 +12,7 @@ const PORT = process.env.PORT ?? 3000;
 app.use(express.json());
 
 app.use("/store", createStoreRouter(prisma));
-app.use("/webhooks", createWebhooksRouter());
+app.use("/webhooks", createWebhooksRouter(prisma));
 app.use("/admin", createAdminRouter(prisma));
 
 const server = app.listen(PORT, () => {
