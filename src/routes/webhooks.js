@@ -5,12 +5,11 @@ function createWebhooksRouter(prisma) {
 
   router.post("/balance-changes", async (_req, res) => {
     try {
-    // Update all purchases to have status "PAYMENT_RECIEVED"
-      await prisma.purchase.update({
+      const result = await prisma.purchase.updateMany({
         where: { status: "PAYMENT_PENDING" },
         data: { status: "PAYMENT_RECIEVED" },
       });
-      res.status(202).json({ received: true });
+      res.status(202).json({ received: true, updated: result.count });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Failed to update purchases" });
