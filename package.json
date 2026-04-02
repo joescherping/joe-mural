@@ -3,15 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "description": "Minimal Express API sample",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate",
     "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
     "db:setup": "prisma db push && prisma db seed",
     "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "engines": {
     "node": ">=18"
@@ -23,6 +29,10 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
-    "prisma": "^6.1.0"
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "prisma": "^6.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   }
 }

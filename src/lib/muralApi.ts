@@ -1,11 +1,11 @@
-const axios = require("axios");
+import axios, { type AxiosInstance } from "axios";
 
-const muralApi = axios.create({
+const muralApi: AxiosInstance = axios.create({
   baseURL: "https://api-staging.muralpay.com/api/",
   timeout: 10000,
 });
 
-function getAuthHeaders() {
+function getAuthHeaders(): Record<string, string> {
   const token = process.env.MURAL_API_BEARER_TOKEN;
   if (!token) {
     throw new Error("Missing MURAL_API_BEARER_TOKEN");
@@ -16,7 +16,9 @@ function getAuthHeaders() {
   };
 }
 
-async function getTransaction(transactionId) {
+export async function getTransaction(
+  transactionId: string,
+): Promise<unknown> {
   const response = await muralApi.get(
     `transactions/${encodeURIComponent(transactionId)}`,
     {
@@ -27,11 +29,8 @@ async function getTransaction(transactionId) {
   return response.data;
 }
 
-/**
- * POST /api/payouts/payout (base URL already includes /api/)
- * @param {object} payload - e.g. { sourceAccountId, payouts: [...] }
- */
-async function createPayout(payload) {
+/** POST /api/payouts/payout */
+export async function createPayout(payload: unknown): Promise<unknown> {
   const response = await muralApi.post("payouts/payout", payload, {
     headers: getAuthHeaders(),
   });
@@ -39,25 +38,21 @@ async function createPayout(payload) {
   return response.data;
 }
 
-/**
- * POST /api/payouts/payout/{payout-request-id}/execute
- * @param {string} payoutRequestId
- * @param {object} [body] - defaults to {} if the API accepts an empty JSON body
- */
-async function executePayout(payoutRequestId, body = {}) {
+/** POST /api/payouts/payout/{payout-request-id}/execute */
+export async function executePayout(
+  payoutRequestId: string,
+  body: Record<string, unknown> = {},
+): Promise<unknown> {
   const response = await muralApi.post(
     `payouts/payout/${encodeURIComponent(payoutRequestId)}/execute`,
-    null,
+    body,
     {
-      headers: getAuthHeaders(),
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
     },
   );
 
   return response.data;
 }
-
-module.exports = {
-  getTransaction,
-  createPayout,
-  executePayout,
-};

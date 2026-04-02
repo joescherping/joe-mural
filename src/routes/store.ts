@@ -1,7 +1,8 @@
-const express = require("express");
+import { Router } from "express";
+import type { PrismaClient } from "@prisma/client";
 
-function createStoreRouter(prisma) {
-  const router = express.Router();
+export function createStoreRouter(prisma: PrismaClient): Router {
+  const router = Router();
 
   router.get("/products", async (_req, res) => {
     try {
@@ -16,7 +17,7 @@ function createStoreRouter(prisma) {
   });
 
   router.post("/purchases", async (req, res) => {
-    const { price } = req.body ?? {};
+    const { price } = (req.body ?? {}) as { price?: unknown };
     if (typeof price !== "number" || Number.isNaN(price)) {
       return res.status(400).json({ error: "body.price must be a number" });
     }
@@ -34,5 +35,3 @@ function createStoreRouter(prisma) {
 
   return router;
 }
-
-module.exports = createStoreRouter;

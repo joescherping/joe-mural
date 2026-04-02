@@ -1,7 +1,8 @@
-const express = require("express");
+import { Router } from "express";
+import type { PrismaClient } from "@prisma/client";
 
-function createAdminRouter(prisma) {
-  const router = express.Router();
+export function createAdminRouter(prisma: PrismaClient): Router {
+  const router = Router();
 
   router.get("/purchases", async (_req, res) => {
     try {
@@ -17,5 +18,3 @@ function createAdminRouter(prisma) {
 
   return router;
 }
-
-module.exports = createAdminRouter;
