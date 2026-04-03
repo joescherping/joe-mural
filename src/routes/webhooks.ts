@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { PrismaClient } from "@prisma/client";
 import { getTransaction } from "../lib/muralApi";
 import type { MuralTransaction } from "../types/mural";
+import { runWithdrawTask } from "../tasks/withdraw";
 
 function isMuralTransaction(value: unknown): value is MuralTransaction {
   return typeof value === "object" && value !== null;
@@ -34,19 +35,18 @@ export function createWebhooksRouter(prisma: PrismaClient): Router {
         return res.status(202).json({ received: true, updated: 0 });
       }
 
-      let transactionUnknown: unknown;
+      let transaction: unknown;
       try {
-        transactionUnknown = await getTransaction(transactionId);
+        transaction = await getTransaction(transactionId);
       } catch (err) {
         console.error(err);
         return res.status(202).json({ received: true, updated: 0 });
       }
 
-      if (!isMuralTransaction(transactionUnknown)) {
+      if (!isMuralTransaction(transaction)) {
         return res.status(202).json({ received: true, updated: 0 });
       }
 
-      const transaction = transactionUnknown;
       const tokenAmount = Number(transaction.amount?.tokenAmount);
       if (Number.isNaN(tokenAmount)) {
         return res.status(202).json({ received: true, updated: 0 });
@@ -76,6 +76,9 @@ export function createWebhooksRouter(prisma: PrismaClient): Router {
         where: { id: nearestPurchase.id },
         data: { status: "PAYMENT_RECIEVED", transactionId },
       });
+
+      // Queue the withdrawal task and don't await
+      runWithdrawTask();
 
       res.status(202).json({
         received: true,
