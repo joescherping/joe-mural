@@ -4,6 +4,7 @@ import type { PrismaClient } from "@prisma/client";
 export function createStoreRouter(prisma: PrismaClient): Router {
   const router = Router();
 
+  // List all products
   router.get("/products", async (_req, res) => {
     try {
       const products = await prisma.product.findMany({
@@ -16,6 +17,7 @@ export function createStoreRouter(prisma: PrismaClient): Router {
     }
   });
 
+  // Create a new purchase with a total price specified
   router.post("/purchases", async (req, res) => {
     const { price } = (req.body ?? {}) as { price?: unknown };
     if (typeof price !== "number" || Number.isNaN(price)) {

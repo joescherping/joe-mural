@@ -4,6 +4,7 @@ import type { PrismaClient } from "@prisma/client";
 export function createAdminRouter(prisma: PrismaClient): Router {
   const router = Router();
 
+  // Show all purchases with their current status for the vendor
   router.get("/purchases", async (_req, res) => {
     try {
       const purchases = await prisma.purchase.findMany({

@@ -6,6 +6,7 @@ import { runWithdrawTask } from "../tasks/withdraw";
 export function createWebhooksRouter(prisma: PrismaClient): Router {
   const router = Router();
 
+  // Webhook that gets called when crypto account balance changes
   router.post("/balance-changes", async (req, res) => {
     try {
       // Get transactionId from request
@@ -65,7 +66,7 @@ export function createWebhooksRouter(prisma: PrismaClient): Router {
 
       // The purchase soonest before before the transaction is probably the match
       const nearestPurchase = matchingPurchases
-        // .filter((purchase) => purchase.createdAt < executionDate)
+        .filter((purchase) => purchase.createdAt < executionDate)
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
       if (!nearestPurchase) {
         return res.status(202).json({ received: true, updated: 0 });
