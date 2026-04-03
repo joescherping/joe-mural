@@ -25,4 +25,6 @@ The biggest area of improvement is to make these flows more robust - right now, 
 
 As I mentioned before, I didn't define a way that Purchases could be linked to specific Products, since I didn't have enough time to flesh that out in three hours. That would need to be implemented for the store to be complete.
 
-Lastly, I still need to implement the webhook that updates the status of a purchase when the payout is fully processed.
+Also, I still need to implement the webhook that updates the status of a purchase when the payout is fully processed.
+
+Lastly, crypto prices in a real production application would be handled as BigInt in satoshis rather than in floating point numbers.
