@@ -1,3 +1,10 @@
+Deployment
+-
+
+The service is deployed at https://joe-mural.onrender.com/
+
+However, I am on the free plan for Render, so they will aggressively spin down my server when it's not in use. So the first time you send a request, it may time out. But wait 30-60 seconds and try requesting again, and at that point it'll be 'warmed up' and should respond to your requests.
+
 Setup instructions
 -
 
