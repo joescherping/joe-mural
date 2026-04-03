@@ -1,6 +1,7 @@
 // Hardcoded settings for the vendor since they are only using one Mural crypto account
 //  and only one Colombian fiat bank account
 export const vendorSourceAccountId = "bc739946-59af-4d42-83fb-249d5e62adcf";
+export const vendorCryptoAddress = "0x88D94A1118E53FBFF7011C5bcaB747e20e96d186";
 export const vendorPayoutDetails = {
   "type": "fiat",
   "fiatAndRailDetails": {

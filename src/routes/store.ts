@@ -1,5 +1,6 @@
 import { Router } from "express";
 import type { PrismaClient } from "@prisma/client";
+import { vendorCryptoAddress } from "../constants";
 
 export function createStoreRouter(prisma: PrismaClient): Router {
   const router = Router();
@@ -28,7 +29,11 @@ export function createStoreRouter(prisma: PrismaClient): Router {
       const purchase = await prisma.purchase.create({
         data: { price, status: "PAYMENT_PENDING" },
       });
-      res.status(201).json(purchase);
+      res.status(201).json({
+        purchase,
+        instructions: "Please pay the required price to the crypto address given",
+        address: vendorCryptoAddress,
+      });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Failed to create purchase" });
