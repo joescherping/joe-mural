@@ -17,7 +17,7 @@ function getAuthHeaders(): Record<string, string> {
   };
 }
 
-interface TransactionResponse {
+export interface TransactionResponse {
   "id": string;
   "hash": string;
   "transactionExecutionDate": string;
@@ -46,7 +46,6 @@ export async function getTransaction(
       headers: getAuthHeaders(),
     },
   );
-
   return response.data;
 }
 

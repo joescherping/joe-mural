@@ -1,7 +1,6 @@
-import { PayoutRequest } from "./lib/muralApi";
-
+// Hardcoded settings for the vendor since they are only using one Mural crypto account
+//  and only one Colombian fiat bank account
 export const vendorSourceAccountId = "bc739946-59af-4d42-83fb-249d5e62adcf";
-
 export const vendorPayoutDetails = {
   "type": "fiat",
   "fiatAndRailDetails": {
@@ -16,7 +15,6 @@ export const vendorPayoutDetails = {
   "bankName": "Rappipay",
   "bankAccountOwner": "Jeff Bezos"
 };
-
 export const vendorRecipientInfo = {
   "type": "individual",
   "firstName": "Jeff",
